@@ -1,0 +1,2 @@
+ErrorDocument 403 /radioedu/errors/error403.php
+ErrorDocument 404 /radioedu/errors/error404.php
