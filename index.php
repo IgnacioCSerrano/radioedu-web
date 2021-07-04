@@ -13,6 +13,8 @@ if (basename($_SERVER['REQUEST_URI'], '.php') == 'index') {
 }
 ?>
 
+<!-- Primera versión realizada por: Ignacio Cuevas Serrano -->
+
 <?php $util->includeWithVariables(Constants::INC_HEADER, array('title' => 'Inicio')) ?>
 
 <body>
@@ -20,12 +22,14 @@ if (basename($_SERVER['REQUEST_URI'], '.php') == 'index') {
     <?php include(Constants::INC_NAVBAR) ?>
 
     <div class="container menu-inicio d-flex justify-content-center align-items-center flex-wrap">
-        <div class="box rojo">
-            <a href="<?= Constants::PAGE_RADIO_DASH ?>" class="d-flex flex-column justify-content-center align-items-center">
-                <span><i class="fas fa-broadcast-tower"></i></span>
-                <p>Radios</p>
-            </a>
-        </div>
+        <?php if ($_SESSION['user']['codigo_centro']) : ?>
+            <div class="box rojo">
+                <a href="<?= Constants::PAGE_RADIO_DASH ?>" class="d-flex flex-column justify-content-center align-items-center">
+                    <span><i class="fas fa-broadcast-tower"></i></span>
+                    <p>Radio</p>
+                </a>
+            </div>
+        <?php endif; ?>
         <div class="box verde">
             <a href="<?= Constants::PAGE_USER_DASH ?>" class="d-flex flex-column justify-content-center align-items-center">
                 <span><i class="fas fa-users"></i></span>
@@ -33,7 +37,7 @@ if (basename($_SERVER['REQUEST_URI'], '.php') == 'index') {
             </a>
         </div>
         <div class="box azul">
-            <a href="<?= Constants::PAGE_PROFILE ?>" class="d-flex flex-column justify-content-center align-items-center">
+            <a href="<?= Constants::PAGE_PROFILE_FORM ?>" class="d-flex flex-column justify-content-center align-items-center">
                 <span><i class="fas fa-cogs"></i></span>
                 <p>Perfil</p>
             </a>

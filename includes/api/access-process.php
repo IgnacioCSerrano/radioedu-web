@@ -1,7 +1,7 @@
 <?php
 
-$util = new Util();
 $db = DatabaseConnect::getInstance();
+$util = new Util();
 
 $handle = '';
 $email = '';
@@ -12,7 +12,7 @@ $errors = array();
 if ( isset($_POST['login']) ) {
 
     if ( !isset($_POST['handle']) || !isset($_POST['password']) ) {
-        $errors['form'] = 'Error al enviar formulario: faltan datos.';
+        $errors['form'] = Constants::ERROR_FORM;
         return;
     }
 
@@ -71,7 +71,7 @@ if ( isset($_POST['login']) ) {
 elseif ( isset($_POST['check-email']) ) {
 
     if ( !isset($_POST['email']) ) {
-        $errors['form'] = 'Error al enviar formulario: faltan datos.';
+        $errors['form'] = Constants::ERROR_FORM;
         return;
     }
 
@@ -105,7 +105,7 @@ elseif ( isset($_POST['check-email']) ) {
                 HTML
             );
 
-            $result = sendEmail($emailObject);
+            $result = $util->sendEmail($emailObject);
 
             if ($result === true) {
                 $_SESSION['email'] = $email;
@@ -128,7 +128,7 @@ elseif ( isset($_POST['check-email']) ) {
 elseif ( isset ($_POST['check-code']) ) {
 
     if ( !isset($_POST['code']) ) {
-        $_SESSION['error-code'] = 'Error al enviar formulario: faltan datos.';
+        $_SESSION['error-code'] = Constants::ERROR_FORM;
         return;
     }
 
@@ -152,7 +152,7 @@ elseif ( isset ($_POST['check-code']) ) {
 elseif ( isset($_POST['change-password']) ) {
 
     if ( !isset($_POST['password']) || !isset($_POST['confirm-password']) ) {
-        $errors['form'] = 'Error al enviar formulario: faltan datos.';
+        $errors['form'] = Constants::ERROR_FORM;
         return;
     }
 
@@ -166,7 +166,7 @@ elseif ( isset($_POST['change-password']) ) {
         !preg_match('@[a-z]@', $password) || 
         !preg_match('@[0-9]@', $password) || 
         !preg_match('@[^\w]@', $password) || 
-        strlen($password) < 8 
+        strlen($password) < Constants::PASSW_LENGTH_LONG
     ) {
         $errors['message'] = 'Contraseña no cumple con el formato exigido.';
     } elseif ( $password !== $confPassword ) {

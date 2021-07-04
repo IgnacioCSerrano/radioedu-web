@@ -20,7 +20,9 @@ $subs = DatabaseConnect::getInstance()->getAllSubscribers();
     <div class="container">
         <div class="text-center position-relative">
             <h1 class="p-5 text-center">Listado de usuarios</h1>
-            <a href="<?= Constants::PAGE_USER_FORM ?>" class="btn btn-primary item-float-right">Crear admin</a>
+            <?php if ($_SESSION['user']['super']) : ?>
+                <a href="<?= Constants::PAGE_USER_FORM ?>" class="btn btn-primary item-float-right">Crear admin</a>
+            <?php endif; ?>
         </div>
         <table class="table table-striped user-table">
             <thead>

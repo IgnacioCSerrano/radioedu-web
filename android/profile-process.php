@@ -94,8 +94,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $confPassword = $_POST['confirm-password'];
 
             if ( password_verify($curPassword, $user['password']) ) {
-                if ( strlen($newPassword) < 6 ) {
-                    $errors['length'] = 'La contraseña tiene una longitud inferior a 6 caracteres.';
+                if ( strlen($newPassword) < Constants::PASSW_LENGTH_SHORT ) {
+                    $errors['length'] = 'La contraseña tiene una longitud inferior a ' . Constants::PASSW_LENGTH_SHORT . ' caracteres.';
                 }
             
                 if ($newPassword !== $confPassword) {

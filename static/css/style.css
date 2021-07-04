@@ -247,7 +247,7 @@ body > div.container {
 
 .radio-item-list {
     margin: auto;
-    width: 600px;
+    width: fit-content;
 }
 
 .radio-item-list > a > img {

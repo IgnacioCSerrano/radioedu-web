@@ -11,13 +11,15 @@ $util = new Util();
     </button>
     <div class="navbar-collapse collapse" id="collapsingNavbar">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item <?= $util->echoActiveIfRequestMatches("radioedu"); ?>">
+            <li class="nav-item <?= $util->echoActiveIfRequestMatches('radioedu'); ?>">
                 <a class="nav-link" href="<?= ROOT_FOLDER ?>">Inicio <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item <?= $util->echoActiveIfRequestMatches("radio") ?>">
-                <a class="nav-link" href="<?= Constants::PAGE_RADIO_DASH ?>">Radios</a>
+            <?php if ($_SESSION['user']['codigo_centro']) : ?>
+            <li class="nav-item <?= $util->echoActiveIfRequestMatches(Constants::PAGE_RADIO) ?>">
+                <a class="nav-link" href="<?= Constants::PAGE_RADIO_DASH ?>">Radio</a>
             </li>
-            <li class="nav-item <?= $util->echoActiveIfRequestMatches("user") ?>">
+            <?php endif; ?>
+            <li class="nav-item <?= $util->echoActiveIfRequestMatches(Constants::PAGE_USER) ?>">
                 <a class="nav-link" href="<?= Constants::PAGE_USER_DASH ?>">Usuarios</a>
             </li>
         </ul>
@@ -28,7 +30,7 @@ $util = new Util();
                     <?= strtolower($_SESSION['user']['username']) ?>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item <?= $util->echoActiveIfRequestMatches("personal") ?>" href="<?= Constants::PAGE_PROFILE ?>">
+                    <a class="dropdown-item <?= $util->echoActiveIfRequestMatches(Constants::PAGE_PROFILE) ?>" href="<?= Constants::PAGE_PROFILE_FORM ?>">
                         <i class="fas fa-cog"></i> Perfil
                     </a>
                     <div class="dropdown-divider"></div>

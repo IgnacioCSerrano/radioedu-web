@@ -4,6 +4,7 @@ require_once Constants::INC_UTIL_CLASS;
 require_once Constants::INC_CONN_CLASS;
 
 $util = new Util();
+
 $mensaje = '';
 
 if ( isset($_GET['key']) ) {

@@ -1,7 +1,7 @@
 <?php
 
-$util = new Util();
 $db = DatabaseConnect::getInstance();
+$util = new Util();
 
 $errors = array();
 $success = array();
@@ -11,7 +11,7 @@ $success = array();
 if ( isset($_POST['create-admin']) ) {
 
     if ( !isset($_POST['username']) || !isset($_POST['email']) ) {
-        $errors['form'] = 'Error al enviar formulario: faltan datos.';
+        $errors['form'] = Constants::ERROR_FORM;
         return;
     }
 
@@ -21,8 +21,11 @@ if ( isset($_POST['create-admin']) ) {
     if ( !filter_var($email, FILTER_VALIDATE_EMAIL) ) {
         $errors['email'] = 'Formato de email incorrecto.';
         return;
-    } 
+    }
 
+    $isSuper = isset($_POST['super']);
+    $codigoCentro = $_POST['centro'] ?? null;
+    
     $user = $db->getUserByUsernameOrEmail($username, $email);
 
     if ($user) {
@@ -32,7 +35,7 @@ if ( isset($_POST['create-admin']) ) {
         if ( strcasecmp($user['email'], $email) == 0 ) {
             $errors['email'] = 'Ya existe un usuario registrado con ese correo electrónico.';
         }
-    } else if ( $db->insertAdmin($username, $email) ) {
+    } else if ( $db->insertAdmin($username, $email, $isSuper, $codigoCentro) ) {
         $success['message'] = 'Administrador creado correctamente. Se ha enviado la contraseña por correo a la dirección indicada.';
     } else {
         $errors['db'] = 'No ha sido posible crear el administrador.';
@@ -45,7 +48,7 @@ if ( isset($_POST['create-admin']) ) {
 elseif ( isset($_POST['update-profile-details']) ) {
 
     if ( !isset($_POST['username']) || !isset($_POST['email']) ) {
-        $errors['form'] = 'Error al enviar formulario: faltan datos.';
+        $errors['form'] = Constants::ERROR_FORM;
         return;
     }
 
@@ -86,7 +89,7 @@ elseif ( isset($_POST['update-profile-details']) ) {
 elseif ( isset($_POST['update-password']) ) {
 
     if ( !isset($_POST['current-password']) || !isset($_POST['new-password']) || !isset($_POST['confirm-password']) ) {
-        $errors['form'] = 'Error al enviar formulario: faltan datos.';
+        $errors['form'] = Constants::ERROR_FORM;
         return;
     }
 

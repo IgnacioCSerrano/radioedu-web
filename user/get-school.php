@@ -8,16 +8,15 @@ require_once Constants::INC_VAL_SESSION;
     'includes' porque sería inaccesible debido a las restricciones de .htaccess
 */
 
-$util = new Util();
 $db = DatabaseConnect::getInstance();
+$util = new Util();
 
 /*
-    Las peticiones de sufijo '-create' se usan en la creación de radio educativa porque 
-    recuperan los datos de localidades/centros libres (no asignados a ninguna radio), 
-    mientras que las peticiones de sufijo '-update' se usan en la modificación de radio 
-    educativa porque recuperan los datos de localidades/centros libres junto con la 
-    localidad/centro del valor pasado por parámetro (código de centro educativo de radio 
-    que se está modificando)
+    Las peticiones de sufijo '-create' se usan en la creación porque recuperan los datos 
+    de localidades/centros libres (no asignados a ninguna radio), 
+    mientras que las peticiones de sufijo '-update' se usan en la modificación porque 
+    recuperan los datos de localidades/centros libres junto con la localidad/centro del 
+    valor pasado por parámetro (código de centro educativo del registro existente)
 */
 
 if ( isset($_GET['provincia-create']) ) {

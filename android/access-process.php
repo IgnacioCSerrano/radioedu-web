@@ -174,8 +174,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $cPassword = $_POST['confirm-password'];
         $email = $_POST['email'];
     
-        if ( strlen($password) < 6 ) {
-            $errors['length'] = 'La contraseña tiene una longitud inferior a 6 caracteres.';
+        if ( strlen($password) < Constants::PASSW_LENGTH_SHORT ) {
+            $errors['length'] = 'La contraseña tiene una longitud inferior a ' . Constants::PASSW_LENGTH_SHORT . ' caracteres.';
         }
     
         if ($password !== $cPassword) {

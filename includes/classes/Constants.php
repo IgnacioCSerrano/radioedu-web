@@ -3,20 +3,18 @@
 // NOMBRE DE DIRECTORIO QUE CONTIENE SITIO WEB (CARPETA CONTENEDORA)
 
 defined('ROOT_FOLDER') || 
-define('ROOT_FOLDER', 
-    // substr( $_SERVER['REQUEST_URI'], 0, strpos( $_SERVER['REQUEST_URI'], '/', 1 ) + 1 ) );
-    '/radioedu/');
+    define('ROOT_FOLDER', '/radioedu/');
 
 // RUTA ABSOLUTA (EN MÁQUINA SERVIDOR) DEL DIRECTORIO QUE CONTIENE SITIO WEB
 
 defined('ROOT_PATH') || 
-define('ROOT_PATH', 
-    $_SERVER['DOCUMENT_ROOT'] . ROOT_FOLDER);
+    define('ROOT_PATH', 
+        $_SERVER['DOCUMENT_ROOT'] . ROOT_FOLDER);
 
 // URL DE DOMINIO WEB
 
 defined('DOMAIN_URL') ||
-define('DOMAIN_URL', $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . ROOT_FOLDER);
+    define('DOMAIN_URL', $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . ROOT_FOLDER);
 
 class Constants {
 
@@ -24,10 +22,11 @@ class Constants {
 
     public const ADMIN              = 'administrador';
     public const SUB                = 'suscriptor';
-    public const COOKIE_EXP_TIME    = 30 * 24 * 60 * 60;
+    public const MYSQL_INIT_CMD     = 'SET lc_time_names=\'es_ES\'';
+    public const ERROR_FORM         = 'Error al enviar el formulario: No se han rellenado todos los campos.';
+
     public const REC_PER_PAGE       = 15;
     public const PAG_INTERV         = 6;
-    public const MYSQL_INIT_CMD     = 'SET lc_time_names=\'es_ES\'';
 
     // CREDENCIALES DE CONEXIÓN A BASE DE DATOS
 
@@ -36,24 +35,42 @@ class Constants {
     public const DB_USER        = 'root';
     public const DB_PASSWORD    = 'root';
 
-    // CREDENCIALES DE CUENTA DE CORREO CORPORATIVO
+    // CREDENCIALES DE CUENTA DE CORREO CORPORATIVO Y PARÁMETROS DE CONEXIÓN
 
     public const SENDER_NAME            = 'RadioEdu';
     public const SENDER_EMAIL_ADDRESS   = '';
     public const SENDER_EMAIL_PASSWORD  = '';
+
+    // PARÁMETROS PHPMAILER
+
+    public const MAIL_HOST              = 'smtp.gmail.com';
+    public const MAIL_PORT              = '587';
+    public const MAIL_SMTP              = 'tls';
+    public const MAIL_CHARSET           = 'UTF-8';
 
     // FIREBASE API
 
     public const FCM_URL = 'https://fcm.googleapis.com/fcm/send';
     public const FCM_API = ''; // Firebase Console -> Project Settings -> Cloud Messaging -> Server key
 
-    // GENERACIÓN DE CLAVES ALEATORIAS
+    // SEGURIDAD
 
     public const CODE_ALPHANUMERIC  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     public const CODE_NUMERIC       = '0123456789';
-    public const CODE_LENGTH        = 6;
+    public const COOKIE_EXP_TIME    = 30 * 24 * 60 * 60;
     public const TOKEN_LENTH_SHORT  = 72;
     public const TOKEN_LENGTH_LONG  = 255;
+
+    public const CODE_LENGTH        = 6;
+    public const PASSW_LENGTH_LONG  = 8;
+    public const PASSW_LENGTH_SHORT = 6;
+    public const PASSW_REGEX        = '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{' . self::PASSW_LENGTH_LONG . ',}$';
+    public const PASSW_MUST         = 'mayúscula, minúscula, número, carácter especial y longitud mínima de ' . self::PASSW_LENGTH_LONG . ' caracteres.';
+     
+
+    // RUTA VERIFICACIÓN
+
+    public const PATH_VERIFY  = DOMAIN_URL . 'android/verify-key.php';
 
     // RUTAS IMG
 
@@ -89,7 +106,6 @@ class Constants {
     public const INC_ACCESS         = self::INC_API_PATH . 'access-process.php';
     public const INC_ADMIN          = self::INC_API_PATH . 'admin-process.php';
     public const INC_RADIO          = self::INC_API_PATH . 'radio-process.php';
-    public const INC_EMAIL          = self::INC_API_PATH . 'send-email.php';
 
     public const INC_COMP_PATH      = ROOT_PATH . 'includes/components/';
     public const INC_HEADER         = self::INC_COMP_PATH . 'header.php';
@@ -101,7 +117,8 @@ class Constants {
 
     // RUTAS PÁGINAS ACCESO
 
-    public const PAGE_ACCESS_PATH   = ROOT_FOLDER . 'access/';
+    public const PAGE_ACCESS        = 'access';
+    public const PAGE_ACCESS_PATH   = ROOT_FOLDER . self::PAGE_ACCESS . '/';
     public const PAGE_LOGIN         = self::PAGE_ACCESS_PATH . 'login.php';
     public const PAGE_LOGOUT        = self::PAGE_ACCESS_PATH . 'logout.php';
     public const PAGE_CODE_REQ      = self::PAGE_ACCESS_PATH . 'code-request.php';
@@ -110,7 +127,8 @@ class Constants {
     
     // RUTAS PÁGINAS RADIO
 
-    public const PAGE_RADIO_PATH    = ROOT_FOLDER . 'radio/';
+    public const PAGE_RADIO         = 'radio';
+    public const PAGE_RADIO_PATH    = ROOT_FOLDER . self::PAGE_RADIO . '/';
     public const PAGE_RADIO_DASH    = self::PAGE_RADIO_PATH . 'radio-dashboard.php';
     public const PAGE_RADIO_FORM    = self::PAGE_RADIO_PATH . 'radio-form.php';
     public const PAGE_PODC_DASH     = self::PAGE_RADIO_PATH . 'podcast-dashboard.php';
@@ -119,26 +137,30 @@ class Constants {
 
     // RUTAS PÁGINAS USUARIO
 
-    public const PAGE_USER_PATH     = ROOT_FOLDER . 'user/';
+    public const PAGE_USER          = 'user';
+    public const PAGE_USER_PATH     = ROOT_FOLDER . self::PAGE_USER . '/';
     public const PAGE_USER_DASH     = self::PAGE_USER_PATH . 'user-dashboard.php';
     public const PAGE_USER_FORM     = self::PAGE_USER_PATH . 'admin-form.php';
 
     // RUTAS PÁGINAS PERFIL
 
-    public const PAGE_PROF_PATH     = ROOT_FOLDER . 'personal/';
-    public const PAGE_PROFILE       = self::PAGE_PROF_PATH . 'profile-form.php';
+    public const PAGE_PROFILE       = 'personal';
+    public const PAGE_PROFILE_PATH  = ROOT_FOLDER . self::PAGE_PROFILE .  '/';
+    public const PAGE_PROFILE_FORM  = self::PAGE_PROFILE_PATH . 'profile-form.php';
 
     // RUTAS PÁGINAS ERROR
 
-    public const PAGE_ERROR_PATH    = ROOT_FOLDER . 'errors/';
+    public const PAGE_ERROR         = 'errors';
+    public const PAGE_ERROR_PATH    = ROOT_FOLDER . self::PAGE_ERROR . '/';
     public const PAGE_ERROR403      = self::PAGE_ERROR_PATH . 'error403.php';
     public const PAGE_ERROR404      = self::PAGE_ERROR_PATH . 'error404.php';
 
-    // PARÁMETROS RUTAS
+    // PARÁMETROS (RUTA)
 
     public const PARAM_RADIO    = 'id-radio';
     public const PARAM_PODC     = 'id-podcast';
     public const PARAM_PAGE     = 'page';
     public const PARAM_DATE     = 'date';
+    public const PARAM_KEY      = 'key';
     
 }

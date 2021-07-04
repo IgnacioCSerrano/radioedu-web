@@ -4,11 +4,12 @@ require_once Constants::INC_VAL_SESSION;
 require_once Constants::INC_RADIO;
 
 $util = new Util();
-$db = DatabaseConnect::getInstance();
 
 if (!$isLoggedIn) {
     $util->redirect(Constants::PAGE_LOGIN);
 }
+
+$db = DatabaseConnect::getInstance();
 
 if ( isset($_GET[Constants::PARAM_PODC]) ) {
     $idPodcast = $_GET[Constants::PARAM_PODC];
@@ -21,7 +22,7 @@ if ( isset($_GET[Constants::PARAM_PODC]) ) {
 
     $radio = $db->getRadioById($podcast['id_radio']);
 
-    if ( $radio['id_admin'] != $_SESSION['user']['id'] ) {
+    if ( $radio['id'] != $_SESSION['user']['id_radio'] ) {
         $util->redirect(Constants::PAGE_ERROR403);
     }
     

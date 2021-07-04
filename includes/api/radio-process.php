@@ -1,7 +1,7 @@
 <?php
 
-$util = new Util();
 $db = DatabaseConnect::getInstance();
+$util = new Util();
 
 $errors = array();
 
@@ -9,16 +9,15 @@ $errors = array();
 
 if ( isset($_POST['create-radio']) ) {
 
-    if ( !isset($_POST['nombre']) || !isset($_FILES['imagen']) || !isset($_POST['centro']) ) {
-        $errors['form'] = 'Error al enviar formulario: faltan datos.';
+    if ( !isset($_POST['nombre']) ) {
+        $errors['form'] = Constants::ERROR_FORM;
         return;
     }
 
     $nombre = $_POST['nombre'];
     $imagen = $util->uploadImage(Constants::IMG_RADIO_PATH, $_FILES['imagen'], Constants::IMG_RADIO_PH);
-    $centro = $_POST['centro'];
 
-    if ($db->insertRadio($nombre, $imagen, $_SESSION['user']['id'], $centro)) {
+    if ($db->insertRadio($nombre, $imagen, $_SESSION['user']['codigo_centro'], $_SESSION['user']['id'])) {
         $util->redirect(Constants::PAGE_RADIO_DASH);
     } else {
         $errors['insert'] = 'Error al crear radio. Inténtelo de nuevo más tarde.';
@@ -30,23 +29,17 @@ if ( isset($_POST['create-radio']) ) {
 
 elseif ( isset($_POST['update-radio']) ) {
 
-    if ( 
-        !isset($_POST['nombre']) || 
-        !isset($_FILES['imagen']) || 
-        !isset($_POST['centro']) || 
-        !isset($_GET['id-radio'])
-    ) {
-        $errors['form'] = 'Error al enviar formulario: faltan datos.';
+    if ( !isset($_POST['nombre']) ) {
+        $errors['form'] = Constants::ERROR_FORM;
         return;
     }
 
     $nombre = $_POST['nombre'];
     $imagen = $util->uploadImage(Constants::IMG_RADIO_PATH, $_FILES['imagen'], 
         Constants::IMG_RADIO_PATH . $_POST['img-radio']);
-    $centro = $_POST['centro'];
-    $idRadio = $_GET['id-radio'];
+    $idRadio = $_SESSION['user']['id_radio'];
 
-    if ($db->updateRadio($idRadio, $nombre, $imagen, $centro)) {
+    if ($db->updateRadio($idRadio, $nombre, $imagen)) {
         $util->redirect(Constants::PAGE_RADIO_DASH);
     } else {
         $errors['update'] = 'Error al modificar radio. Inténtelo de nuevo más tarde.';
@@ -75,11 +68,10 @@ elseif ( isset($_POST['create-podcast']) ) {
     if ( 
         !isset($_POST['titulo']) || 
         !isset($_POST['cuerpo']) || 
-        !isset($_FILES['imagen']) || 
-        !isset($_FILES['audio']) ||
+        $_FILES['audio']['size'] == 0 ||
         !isset($_GET['id-radio'])
     ) {
-        $errors['form'] = 'Error al enviar formulario: faltan datos.';
+        $errors['form'] = Constants::ERROR_FORM;
         return;
     }
 
@@ -99,7 +91,7 @@ elseif ( isset($_POST['create-podcast']) ) {
     if ( $db->insertPodcast($titulo, $cuerpo, $imagen, $audio, $idRadio) ) {
         $nombreRadio = $db->getRadioById($idRadio)['nombre'];
 
-        $util->sendNotification($nombreRadio, sprintf('¡Nueva entrada de %s: "%s"!', $nombreRadio, $titulo), $tokenArray); // envío de notificaciones
+        $util->sendNotification($nombreRadio, sprintf('¡Nueva entrada de %s!: "%s"', $nombreRadio, $titulo), $tokenArray); // envío de notificaciones
 
         $util->redirect(sprintf('%s?%s=%s', Constants::PAGE_PODC_DASH, Constants::PARAM_RADIO, $idRadio));
     } else {
@@ -116,12 +108,10 @@ elseif ( isset($_POST['update-podcast']) ) {
         !isset($_POST['titulo']) || 
         !isset($_POST['cuerpo']) || 
         !isset($_POST['img-podcast']) || 
-        !isset($_FILES['imagen']) || 
-        !isset($_FILES['audio']) ||
         !isset($_GET['id-podcast']) ||
         !isset($_GET['id-radio'])
     ) {
-        $errors['form'] = 'Error al enviar formulario: faltan datos.';
+        $errors['form'] = Constants::ERROR_FORM;
         return;
     }
 
@@ -160,7 +150,7 @@ elseif ( isset($_POST['delete-podcast']) ) {
 elseif ( isset($_POST['send-comment']) ) {
 
     if ( !isset($_POST['mensaje']) || !isset($_GET['id-podcast']) ) {
-        $errors['form'] = 'Error al enviar formulario: faltan datos.';
+        $errors['form'] = Constants::ERROR_FORM;
         return;
     }
 

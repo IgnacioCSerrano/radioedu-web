@@ -32,7 +32,7 @@ if ( isset($_SESSION['success-code']) ) {
                         <span>Se ha enviado un código a la dirección <?= $_SESSION['email'] ?></span>
                     </div>
                     <div class="form-group pt-2">
-                        <input class="form-control" type="text" pattern="\d*" minlength="6" maxlength="6" name="code" placeholder="Código" required>
+                        <input class="form-control" type="text" pattern="\d*" title="El código es una cadena numérica de <?= Constants::CODE_LENGTH ?> dígitos." minlength="<?= Constants::CODE_LENGTH ?>" maxlength="<?= Constants::CODE_LENGTH ?>" name="code" placeholder="Código" required>
                     </div>
                     <div class="form-group pt-3">
                         <input class="form-control button" type="submit" name="check-code" value="Comprobar">

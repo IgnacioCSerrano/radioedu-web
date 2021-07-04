@@ -53,7 +53,7 @@ if (!$isLoggedIn) {
             </div>
 
             <div class="col-md-5 ml-auto d-flex flex-column justify-content-end">
-                <small class="text-center py-5">La nueva contraseña debe contener mayúscula, minúscula, carácter especial y una longitud mínima de 8 caracteres.</small>
+                <small class="text-center py-5">La nueva contraseña debe contener <?= Constants::PASSW_MUST ?></small>
                 <form action="<?= basename(__FILE__) ?>" method="POST" autocomplete="off">
                     <div class="form-group">
                         <label for="password">Contraseña actual</label>
@@ -61,7 +61,7 @@ if (!$isLoggedIn) {
                     </div>
                     <div class="form-group">
                         <label for="password">Contraseña nueva</label>
-                        <input type="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" title="Contraseña debe contener al menos un carácter en mayúscula, minúscula, número, especial y longitud mínima de 8 caracteres" class="form-control" id="password" name="new-password" required>
+                        <input type="password" pattern="<?= Constants::PASSW_REGEX ?>" title="Contraseña debe contener al menos <?=  Constants::PASSW_MUST ?>" class="form-control" id="password" name="new-password" required>
                     </div>
                     <div class="form-group">
                         <label for="confirm_password">Confirmar contraseña</label>

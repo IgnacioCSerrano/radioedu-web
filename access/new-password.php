@@ -29,10 +29,10 @@ if ( !isset($_SESSION['success-code']) ) {
                 <form action="<?= basename(__FILE__) ?>" method="POST" autocomplete="off">
                     <h2 class="text-center pb-3">Nueva Contraseña</h2>
                     <div class="alert text-center ellipsis" style="padding: 0.4rem 0.4rem">
-                        <span>Por favor, elija una nueva contraseña segura con mayúscula, minúscula, carácter especial y una longitud mínima de 8 caracteres.</span>
+                        <span>Por favor, elija una nueva contraseña segura con <?= Constants::PASSW_MUST ?></span>
                     </div>
                     <div class="form-group pt-2">
-                        <input class="form-control" type="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" title="Contraseña debe contener al menos un carácter en mayúscula, minúscula, número, especial y longitud mínima de 8 caracteres" name="password" placeholder="Contraseña" autocomplete="on" required>
+                        <input class="form-control" type="password" pattern="<?= Constants::PASSW_REGEX ?>" title="Contraseña debe contener al menos <?=  Constants::PASSW_MUST ?>" name="password" placeholder="Contraseña" autocomplete="on" required>
                     </div>
                     <div class="form-group">
                         <input class="form-control" type="password" name="confirm-password" placeholder="Confirmar contraseña" autocomplete="on" required>

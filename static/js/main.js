@@ -74,15 +74,6 @@ $(function() {
         $('#blockPodForm').trigger('submit')
     })
 
-    // BORRADO DE RADIO
-
-    $(".modalRadio").click(function() {
-        let id = $(this).data('id')         // dataset
-        $("#idRadio").val(id)
-        let nombre = $(this).data('name')   // dataset
-        $('#modalMessage').text('¿Está seguro de que desea eliminar a ' + nombre + '?')
-    })
-
     // BORRADO DE PODCAST
 
     $(".modalPodcast").click(function() {
